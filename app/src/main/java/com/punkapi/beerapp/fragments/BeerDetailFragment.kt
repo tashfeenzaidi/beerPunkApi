@@ -36,10 +36,15 @@ class BeerDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val imageView:ImageView = view.findViewById(R.id.image)
+        val back:ImageView = view.findViewById(R.id.back)
         val name:TextView = view.findViewById(R.id.name)
         val tagLine:TextView = view.findViewById(R.id.tag_line)
         val description:TextView = view.findViewById(R.id.description)
         val abv:TextView = view.findViewById(R.id.abv)
+
+        back.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
 
         Glide.with(requireContext())
             .load(beer.imageUrl)
@@ -49,6 +54,7 @@ class BeerDetailFragment : Fragment() {
         tagLine.text = beer.tagline
         description.text = beer.description
         abv.text = beer.abv.toString()
+
     }
 
     companion object {

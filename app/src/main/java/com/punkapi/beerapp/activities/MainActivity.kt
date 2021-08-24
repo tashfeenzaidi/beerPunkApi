@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.FragmentOnAttachListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.punkapi.beerapp.R
@@ -29,11 +31,16 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                Toast.makeText(this@MainActivity, p0, Toast.LENGTH_SHORT).show()
                 viewModel.getSearchResults(p0.toString())
             }
-
         })
+        supportFragmentManager.addOnBackStackChangedListener {
+            if (supportFragmentManager.backStackEntryCount == 1){
+                searchField.visibility = View.GONE
+            }else{
+                searchField.visibility = View.VISIBLE
+            }
+        }
         getBeerList()
     }
 

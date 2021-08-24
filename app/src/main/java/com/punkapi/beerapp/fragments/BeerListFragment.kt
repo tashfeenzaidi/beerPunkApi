@@ -48,8 +48,6 @@ class BeerListFragment : Fragment(), BeerListItemClick {
     }
 
     override fun onItemClick(index: Int) {
-        Toast.makeText(requireContext(), "item click $index", Toast.LENGTH_SHORT).show()
-
         requireActivity().supportFragmentManager
             .beginTransaction()
             .replace(R.id.container,BeerDetailFragment.newInstance(list[index])).addToBackStack("BeerDetail")
