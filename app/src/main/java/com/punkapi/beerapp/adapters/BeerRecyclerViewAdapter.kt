@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.punkapi.beerapp.R
 
-class BeerRecyclerViewAdapter(private val dataSet: Array<String>) :
+class BeerRecyclerViewAdapter :
         RecyclerView.Adapter<BeerRecyclerViewAdapter.ViewHolder>() {
 
 
