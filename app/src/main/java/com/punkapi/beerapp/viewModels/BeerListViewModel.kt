@@ -16,26 +16,32 @@ class BeerListViewModel : ViewModel() {
     private var retrofit: Retrofit = Service.getInstance()
     private val service: ApiInterface = retrofit.create(ApiInterface::class.java)
     var beerList : MutableLiveData<ArrayList<BeerModel>> = MutableLiveData<ArrayList<BeerModel>>()
-
+    private var filter: MutableMap<String?, String?> = HashMap()
     fun getBeerList() : LiveData<ArrayList<BeerModel>>{
-        val call = service.getBeersList()
-        call.enqueue(object : Callback<ArrayList<BeerModel>>{
+        val call = service.getBeers(filter)
+        call.enqueue(object : Callback<ArrayList<BeerModel>> {
             override fun onResponse(
-                call: Call<ArrayList<BeerModel>>,
-                response: Response<ArrayList<BeerModel>>
+                    call: Call<ArrayList<BeerModel>>,
+                    response: Response<ArrayList<BeerModel>>
             ) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     beerList.value = response.body()
                 }
             }
 
             override fun onFailure(call: Call<ArrayList<BeerModel>>, t: Throwable) {
-               println("error occour")
+                println("error occour")
             }
 
 
         })
      return beerList
+    }
+
+    fun getSearchResults(name:String){
+        filter.clear()
+        filter["beer_name"] = name
+        getBeerList()
     }
 
 }

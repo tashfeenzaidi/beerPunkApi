@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.punkapi.beerapp.R
@@ -20,28 +21,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         var searchfield:EditText = findViewById(R.id.search)
-        searchfield.addTextChangedListener(object : TextWatcher{
+        searchfield.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("Not yet implemented")
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("Not yet implemented")
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
+                Toast.makeText(this@MainActivity, p0, Toast.LENGTH_SHORT).show()
+                viewModel.getSearchResults(p0.toString())
             }
 
         })
         getBeerList()
     }
 
-
      private fun getBeerList(){
          viewModel = ViewModelProvider(this).get(BeerListViewModel::class.java)
          viewModel.getBeerList().observe(this, { list ->
-             supportFragmentManager.beginTransaction().add(R.id.container, BeerListFragment.newInstance(list))
+             supportFragmentManager.beginTransaction().replace(R.id.container, BeerListFragment.newInstance(list))
                      .commit()
          })
      }
