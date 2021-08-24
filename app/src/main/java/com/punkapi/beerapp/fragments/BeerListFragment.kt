@@ -11,15 +11,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.punkapi.beerapp.R
 import com.punkapi.beerapp.adapters.BeerRecyclerViewAdapter
 import com.punkapi.beerapp.interfaces.BeerListItemClick
+import com.punkapi.beerapp.models.BeerModel
 import com.punkapi.beerapp.viewModels.BeerListViewModel
 
 class BeerListFragment : Fragment(), BeerListItemClick {
+    private lateinit var list : ArrayList<BeerModel>
 
     companion object {
-        fun newInstance() = BeerListFragment()
+        fun newInstance(list : ArrayList<BeerModel>) : BeerListFragment{
+            val args = Bundle()
+            args.putParcelableArrayList("list",list);
+            val fragment = BeerListFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 
-    private lateinit var viewModel: BeerListViewModel
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val args = arguments
+         list = args?.getParcelableArrayList<BeerModel>("list") as ArrayList<BeerModel>
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,18 +40,11 @@ class BeerListFragment : Fragment(), BeerListItemClick {
         return inflater.inflate(R.layout.beer_list_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(BeerListViewModel::class.java)
-
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-        var adapter = BeerRecyclerViewAdapter(requireContext(),this)
+        var adapter = BeerRecyclerViewAdapter(requireContext(),list,this)
         recyclerView.adapter = adapter
-
     }
 
     override fun onItemClick(index: Int) {

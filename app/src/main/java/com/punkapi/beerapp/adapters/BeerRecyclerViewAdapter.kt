@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.punkapi.beerapp.R
 import com.punkapi.beerapp.interfaces.BeerListItemClick
+import com.punkapi.beerapp.models.BeerModel
 
-class BeerRecyclerViewAdapter(private val context:Context, private val itemClick:BeerListItemClick) :
+class BeerRecyclerViewAdapter(private val context:Context, var list:ArrayList<BeerModel> ,private val itemClick:BeerListItemClick) :
         RecyclerView.Adapter<BeerRecyclerViewAdapter.ViewHolder>() {
 
 
@@ -37,15 +38,19 @@ class BeerRecyclerViewAdapter(private val context:Context, private val itemClick
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Glide.with(context)
-                .load("http://images.punkapi.com/v2/194.png")
+                .load(list[position].imageUrl)
                 .into(holder.imageView)
 
-        holder.nameTextView.text = "name"
-        holder.tagTextView.text = "tag"
+        holder.nameTextView.text = list[position].name
+        holder.tagTextView.text = list[position].tagline
         holder.onBind(itemClick)
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return if (list.isNotEmpty()){
+            list.size
+        }else{
+            0
+        }
     }
 }
