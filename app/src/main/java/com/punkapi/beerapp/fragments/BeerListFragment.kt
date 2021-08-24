@@ -52,7 +52,7 @@ class BeerListFragment : Fragment(), BeerListItemClick {
 
         requireActivity().supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container,BeerDetailFragment.newInstance("","")).addToBackStack("BeerDetail")
+            .replace(R.id.container,BeerDetailFragment.newInstance(list[index])).addToBackStack("BeerDetail")
             .commit()
     }
 

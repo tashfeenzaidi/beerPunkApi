@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var searchfield:EditText = findViewById(R.id.search)
-        searchfield.addTextChangedListener(object : TextWatcher {
+        val searchField:EditText = findViewById(R.id.search)
+        searchField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
