@@ -6,12 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.punkapi.beerapp.R
 import com.punkapi.beerapp.adapters.BeerRecyclerViewAdapter
+import com.punkapi.beerapp.interfaces.BeerListItemClick
 import com.punkapi.beerapp.viewModels.BeerListViewModel
 
-class BeerListFragment : Fragment() {
+class BeerListFragment : Fragment(), BeerListItemClick {
 
     companion object {
         fun newInstance() = BeerListFragment()
@@ -34,12 +36,19 @@ class BeerListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var recyclerView: RecyclerView
-        recyclerView = view.findViewById(R.id.recycler_view)
-        var adapter:BeerRecyclerViewAdapter
-        adapter = BeerRecyclerViewAdapter()
+        var recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
+        var adapter = BeerRecyclerViewAdapter(requireContext(),this)
         recyclerView.adapter = adapter
 
+    }
+
+    override fun onItemClick(index: Int) {
+        Toast.makeText(requireContext(), "item click $index", Toast.LENGTH_SHORT).show()
+
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container,BeerDetailFragment.newInstance("","")).addToBackStack("BeerDetail")
+            .commit()
     }
 
 }

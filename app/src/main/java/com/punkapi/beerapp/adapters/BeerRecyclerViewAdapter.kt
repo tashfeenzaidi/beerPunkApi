@@ -1,28 +1,30 @@
 package com.punkapi.beerapp.adapters
 
-import android.net.Uri
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.punkapi.beerapp.R
+import com.punkapi.beerapp.interfaces.BeerListItemClick
 
-class BeerRecyclerViewAdapter :
+class BeerRecyclerViewAdapter(private val context:Context, private val itemClick:BeerListItemClick) :
         RecyclerView.Adapter<BeerRecyclerViewAdapter.ViewHolder>() {
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nameTextView: TextView
-        val tagTextView: TextView
-        val imageView: ImageView
+        val nameTextView: TextView = view.findViewById(R.id.name)
+        val tagTextView: TextView = view.findViewById(R.id.tag_line)
+        val imageView: ImageView = view.findViewById(R.id.beer_image)
+        var view:View = view
 
-        init {
-            // Define click listener for the ViewHolder's View.
-            nameTextView = view.findViewById(R.id.name)
-            tagTextView = view.findViewById(R.id.tag_line)
-            imageView = view.findViewById(R.id.beer_image)
+        fun onBind( listener:BeerListItemClick){
+            view.setOnClickListener {
+                listener.onItemClick(layoutPosition)
+            }
         }
     }
 
@@ -34,12 +36,16 @@ class BeerRecyclerViewAdapter :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.imageView.setImageURI(Uri.parse("https://images.punkapi.com/v2/194.png"))
+        Glide.with(context)
+                .load("http://images.punkapi.com/v2/194.png")
+                .into(holder.imageView)
+
         holder.nameTextView.text = "name"
         holder.tagTextView.text = "tag"
+        holder.onBind(itemClick)
     }
 
     override fun getItemCount(): Int {
-        return 10;
+        return 10
     }
 }
